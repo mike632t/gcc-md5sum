@@ -11,10 +11,8 @@ Linux, VAX/VMS, and Tru64 Unix.
 
 ### Compiling
 
-To  build the application on Linux download the source code from GitHub and
-unzip it (a  new folder  will  be created to automatically).
-
-Then change directory to the new  folder run 'make'.
+To  build the application on download the source code from GitHub and unzip
+it and invoke the compiler using the commands below.
 
 Linux/Tru64 Unix:
 
