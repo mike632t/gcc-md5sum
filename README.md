@@ -25,9 +25,6 @@ Linux/Tru64 Unix:
 
 VMS:
 
-    $ wget https://github.com/mike632t/gcc-md5sum/archive/refs/heads/stable.zip
-    $ unzip stable.zip
-    $ set default [.gcc-md5sum]
     $ cc gcc-md5sum.c /define=DEBUG
     $ link gcc-md5sum
     $ run gcc-md5sum
