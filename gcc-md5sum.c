@@ -3,7 +3,8 @@
  *
  * Copyright(C) 2025   MT
  *
- * A standalone MD5 implementation in ANSI C based on RFC 1321.
+ * A standalone implementation in ANSI C derived from the RSA Data Security
+ * Inc. MD5 Message-Digest Algorithm in RFC 1321.
  *
  * This  program is free software: you can redistribute it and/or modify it
  * under  the terms of the GNU General Public License as published  by  the
@@ -21,6 +22,7 @@
  * 25 Jul 25  0.1.0001  - Initial version - MT
  * 28 Jul 25            - Defining  DEBUG allows the routines to be  tested 
  *                        independently of the file system. - MT
+ *                      - Added copyright notice from RFC - MT
  * 
  * 
  * TODO:                
@@ -49,12 +51,6 @@ int main(int argc, char *argv[])
 
 #if defined(DEBUG)
 
-   /* A simplified test routine
-    * 
-    * echo -n "abc" | md5sum 
-    *
-    */
-
    char *s_data = "abc";
 
    memcpy (c_buffer, s_data, strlen(s_data)); /* Copy test data to buffer */
@@ -70,13 +66,13 @@ int main(int argc, char *argv[])
 
 #else
 
-   size_t i_bytes;
    FILE *h_file;
+   size_t i_bytes;
    int i_count;
    
    for (i_count = 1; i_count < argc; i_count++)
    {
-      if ((h_file = fopen(argv[i_count], "r"))) /* No difference between 'rb' and 'r' on linux */
+      if ((h_file = fopen(argv[i_count], "rb"))) /* No difference between 'rb' and 'r' on linux */
       {
          v_init(&t_context);
          while ((i_bytes = fread(c_buffer, 1, sizeof(c_buffer), h_file)) > 0)
@@ -95,6 +91,28 @@ int main(int argc, char *argv[])
 #endif
    return errno;
 }
+
+/* Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All 
+   rights reserved.
+
+   License to copy and use this software is granted provided that it
+   is identified as the "RSA Data Security, Inc. MD5 Message-Digest
+   Algorithm" in all material mentioning or referencing this software
+   or this function.
+
+   License is also granted to make and use derivative works provided
+   that such works are identified as "derived from the RSA Data
+   Security, Inc. MD5 Message-Digest Algorithm" in all material
+   mentioning or referencing the derived work.
+
+   RSA Data Security, Inc. makes no representations concerning either
+   the merchantability of this software or the suitability of this
+   software for any particular purpose. It is provided "as is"
+   without express or implied warranty of any kind.
+
+   These notices must be retained in any copies of any part of this
+   documentation and/or software. 
+*/
 
 void v_init(struct md5context *t_context) /* Initialize state (constants defined in RFC 1321) */
 {
@@ -155,6 +173,8 @@ void v_final(struct md5context *t_context, unsigned char c_digest[16])
 
    v_update(t_context, bits, 8); /* Append length (before padding) */
    v_encode(t_context->state, c_digest, 16); /* Store state in digest */
+   
+   /** memset (t_context, 0x0, sizeof (*t_context)); */
 }
 
 static void v_transform(unsigned int i_state[4], const unsigned char c_block[64]) /* Internal MD5 transformation */
@@ -242,6 +262,8 @@ static void v_transform(unsigned int i_state[4], const unsigned char c_block[64]
    i_state[1] += b;
    i_state[2] += c;
    i_state[3] += d;
+
+   /** memset (i_digest, 0x0, sizeof (*i_digest)); */
 }
 
 static void v_encode(unsigned int *i_digest, unsigned char *c_digest, unsigned int i_length) /* Encodes input (unsigned int) into output (unsigned char). */
