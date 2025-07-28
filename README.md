@@ -8,6 +8,7 @@ Currently work in progress (only tested on Debian).
 The  aim  is to have the same source code compile without  modification  on
 Linux, VAX/VMS, and Tru64 Unix.
 
+https://www.ietf.org/rfc/rfc1321.txt
 
 ### Compiling
 
@@ -41,7 +42,9 @@ VMS:
    
    - VMS 5.4-3, vaxc 3.2-044, VAX
 
-   - VMS 7.3, vaxc 6.0-001, VAX
+   - Open VMS 7.3, vaxc 6.0-001, VAX
+   
+   - Open VMS 8.4, vsic 7.4-002, Alpha
    
 ### Problem Reports
 
