@@ -44,6 +44,8 @@ VMS:
 
    - Open VMS 7.3, vaxc 6.0-001, VAX
    
+   - Open VMS 7.3-2, compaqc 6.5-001, Alpha
+   
    - Open VMS 8.4, vsic 7.4-002, Alpha
    
 ### Problem Reports
