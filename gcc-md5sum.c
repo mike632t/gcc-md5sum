@@ -19,6 +19,9 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * 25 Jul 25  0.1.0001  - Initial version - MT
+ * 28 Jul 25            - Defining  DEBUG allows the routines to be  tested 
+ *                        independently of the file system. - MT
+ * 
  * 
  * TODO:                
  * 
@@ -39,16 +42,41 @@
 
 int main(int argc, char *argv[])
 {
-   FILE *h_file;
    struct md5context t_context;
    unsigned char i_digest[16];
    unsigned char c_buffer[512];
-   size_t i_bytes;
-   int i_count, i_counter;
+   int i_counter;
 
+#if defined(DEBUG)
+
+   /* A simplified test routine
+    * 
+    * echo -n "abc" | md5sum 
+    *
+    */
+
+   char *s_data = "abc";
+
+   memcpy (c_buffer, s_data, strlen(s_data)); /* Copy test data to buffer */
+
+   v_init(&t_context);
+   v_update(&t_context, c_buffer, strlen(s_data));
+   v_final(&t_context, i_digest);
+   
+   for (i_counter = 0; i_counter < 16; ++i_counter)
+      printf("%02x", i_digest[i_counter]);
+   printf("\n");
+   printf("900150983cd24fb0d6963f7d28e17f72\n");
+
+#else
+
+   size_t i_bytes;
+   FILE *h_file;
+   int i_count;
+   
    for (i_count = 1; i_count < argc; i_count++)
    {
-      if ((h_file = fopen(argv[i_count], "rb"))) /* No difference between 'rb' and 'r' on linux */
+      if ((h_file = fopen(argv[i_count], "r"))) /* No difference between 'rb' and 'r' on linux */
       {
          v_init(&t_context);
          while ((i_bytes = fread(c_buffer, 1, sizeof(c_buffer), h_file)) > 0)
@@ -63,6 +91,8 @@ int main(int argc, char *argv[])
    else
       warning(errno, "Could not open '%s'", argv[i_count]);
    }
+
+#endif
    return errno;
 }
 
@@ -109,7 +139,10 @@ void v_update(struct md5context *t_context, const unsigned char *c_buffer, unsig
 
 void v_final(struct md5context *t_context, unsigned char c_digest[16])
 {
-   static const unsigned char c_padding[64] = { 0x80 };
+   static const unsigned char c_padding[64] = { 0x80, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
    unsigned char bits[8];
    unsigned int  i_size, i_offset;
 

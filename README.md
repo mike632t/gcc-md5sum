@@ -11,19 +11,26 @@ Linux, VAX/VMS, and Tru64 Unix.
 
 ### Compiling
 
-To  build the application on Linux make sure that you have all the required
-prerequisites installed then download the source code from GitHub and unzip
-it  (a  new folder  will  be created to automatically).
+To  build the application on Linux download the source code from GitHub and
+unzip it (a  new folder  will  be created to automatically).
 
 Then change directory to the new  folder run 'make'.
 
-e.g:
+Linux/Tru64 Unix:
 
     $ wget https://github.com/mike632t/gcc-md5sum/archive/refs/heads/stable.zip
     $ unzip stable.zip
     $ cd gcc-md5sum
-    $ make
+    $ make test
 
+VMS:
+
+    $ wget https://github.com/mike632t/gcc-md5sum/archive/refs/heads/stable.zip
+    $ unzip stable.zip
+    $ set default [.gcc-md5sum]
+    $ cc gcc-md5sum.c /define=DEBUG
+    $ link gcc-md5sum
+    $ run gcc-md5sum
 
 ### Tested
 
@@ -35,7 +42,11 @@ e.g:
    
    - Debian 10 (Buster), tcc 0.9.27, x64
    
-   - Tru64 UNIX V5.1B, cc 6.5-011, Alpha
+   - Tru64 UNIX 5.1b, cc 6.5-011, Alpha
+   
+   - VMS 5.4-3, vaxc 3.2-044, VAX
+
+   - VMS 7.3, vaxc 6.0-001, VAX
    
 ### Problem Reports
 

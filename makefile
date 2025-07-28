@@ -20,6 +20,8 @@
 #  30 Jul 23   0.1   - Initial version - MT
 #   4 Aug 23         - Added backup files to tar archive - MT
 #  11 Nov 24   0.2   - Project name derived from current folder - MT
+#  25 Jul 25   0.3   - Added test - MT
+#  28 Jul 25   0.3   - Use a different test if DEBUG is enabled - MT
 #
 
 PROJECT	= $(strip $(notdir $(abspath $(CURDIR)/.)))
@@ -52,7 +54,7 @@ FLAGS	+=  -no-pie
 endif
 
 ifdef DEBUG
-FLAGS	+=  -g
+FLAGS	+=  -g -DDEBUG
 endif
 
 make:$(PROGRAM) $(OBJECT)
@@ -60,29 +62,25 @@ make:$(PROGRAM) $(OBJECT)
 all:clean $(PROGRAM)
 
 %.o : %.c
-ifdef DEBUG
-	@echo $(CC) $(FLAGS) -c $<
-endif
+#	@echo $(CC) $(FLAGS) -c $<
 	@$(CC) $(FLAGS) -c $<
 
 %: %.o
-ifdef DEBUG
-	@echo $(CC) $(FLAGS) -o $@ $< $(LIBS)
-endif
+#	@echo $(CC) $(FLAGS) -o $@ $< $(LIBS)
 	@$(CC) $(FLAGS) -o $@ $<  $(LIBS)
 	@ls --color $@
 
 test: $(PROGRAM)
 ifdef DEBUG
-	@echo "for program in $(PROGRAM); do ./$$program * | md5sum -c ; done"
-endif
+	@for program in $(PROGRAM); do ./$$program ; done
+	@for program in $(PROGRAM); do echo -n "abc" | md5sum ; done
+else
 	@for program in $(PROGRAM); do ./$$program * | md5sum -c ; done
+endif
 
 clean:
-ifdef DEBUG
-	@echo rm -f $(OBJECT) 
-	@echo rm -f $(PROGRAM)
-endif
+#	@echo rm -f $(OBJECT) 
+#	@echo rm -f $(PROGRAM)
 	@rm -f $(OBJECT) # -v
 	@rm -f $(PROGRAM) # -v
 
