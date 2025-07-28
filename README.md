@@ -52,7 +52,7 @@ please create a new [issue](https://github.com/mike632t/gcc-md5sum/issues).
 
 Your problem report should contain:
 
-- Architecture (and VM host if applicable);
+- Architecture;
 
 - Operating System and version;
 
