@@ -42,12 +42,15 @@ VMS:
    
    - VMS 5.4-3, vaxc 3.2-044, VAX
 
-   - Open VMS 7.3, vaxc 6.0-001, VAX
+   - Open VMS 7.3, cc 6.0-001, VAX
    
-   - Open VMS 7.3-2, compaqc 6.5-001, Alpha
+   - Open VMS 7.3-2, cc 6.5-001, Alpha
    
-   - Open VMS 8.4, vsic 7.4-002, Alpha
-   
+   - Open VMS 8.4, cc 7.4-002, Alpha
+
+Note - Due to the way data is stored on disk, the md5sum digests for a file
+won't be the same on VMS systems as on UNIX.  
+
 ### Problem Reports
 
 If you find problems or have suggestions relating to these simulators, then
