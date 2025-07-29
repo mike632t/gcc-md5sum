@@ -3,7 +3,7 @@
  *
  * Copyright(C) 2013   MT
  *
- * Define debug macro.
+ * Define various debugging and error handling routines.  
  *
  * This  program is free software: you can redistribute it and/or modify it
  * under  the terms of the GNU General Public License as published  by  the
@@ -27,7 +27,7 @@
  *                        be defined from the command line - MT
  * 09 Jun 25  0.3.0006  - Changed to use stdout instead of stderr - MT
  * 25 Jul 25  0.4.0007  - Added profile and error macros - MT
- *
+ *                      - Made error handling ANSI C compatible - MT   
  */
 
 #ifndef debug /* Don't redefine macro if already defined. */
@@ -69,33 +69,33 @@
 #endif
 #endif
 
-#ifndef error /* Don't redefine macro if already defined. */
+#ifndef _DEBUG_H_ /* Don't redefine functions if already defined. */
+
+#define _DEBUG_H_
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <errno.h>
 
-#define error(i_errno, s_format, ...) /* Display an error message and exit */ \
-    do { \
-        int _err = (i_errno); \
-        if (!_err) _err = -1; \
-        fprintf(stderr, "%s: ", NAME); /* Depends on NAME being defined */ \
-        fprintf(stderr, s_format, ##__VA_ARGS__); \
-        fprintf(stderr, "\n"); \
-        exit(_err); \
-    } while (0)
-#endif
+void error(int i_errno, const char *s_format, ...)  /* Print formatted error message and exit returning errno */
+{
+   va_list t_args;
+   if (!(i_errno)) i_errno = -1;  /* If errno not set return -1 */
+   va_start(t_args, s_format);
+   fprintf(stderr, "%s: ", NAME);
+   vfprintf(stderr, s_format, t_args);
+   fprintf(stderr, "\n");
+   va_end(t_args);
+   exit(i_errno);
+}
 
-#ifndef warning /* Don't redefine macro if already defined. */
-#include <stdio.h>
-#include <stdarg.h>
-#include <errno.h>
-
-#define warning(i_errno, s_format, ...) /* Display an warning message */ \
-    do { \
-        int _err = (i_errno); \
-        if (!_err) _err = -1; \
-        fprintf(stderr, "%s: ", NAME); /* Depends on NAME being defined */ \
-        fprintf(stderr, s_format, ##__VA_ARGS__); \
-        fprintf(stderr, "\n"); \
-    } while (0)
+void warning(int i_errno, const char *s_format, ...)  /* Print formatted warning message */
+{
+   va_list t_args;
+   va_start(t_args, s_format);
+   fprintf(stderr, "%s: ", NAME);
+   vfprintf(stderr, s_format, t_args);
+   fprintf(stderr, "\n");
+   va_end(t_args);
+}
 #endif
