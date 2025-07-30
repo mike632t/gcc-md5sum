@@ -49,7 +49,32 @@ VMS:
    - Open VMS 8.4, cc 7.4-002, Alpha
 
 Note - Due to the way data is stored on disk, the md5sum digests for a file
-won't be the same on VMS systems as on UNIX.  
+won't be the same on VMS systems as on UNIX.  To get the same MD5 digest as
+on a UNIX/Linux system your VMS file must have the file attributes streamlf
+and sequential.
+
+You can check this using the following command.
+```
+$ anal/rms <filename>
+
+ :
+ :
+ :
+
+RMS FILE ATTRIBUTES
+
+        File Organization: sequential
+        Record Format: stream-LF
+        Record Attributes:   carriage-return
+        Maximum Record Size: 0
+ :
+ :
+ :
+
+```
+Note  that if you compress the files using ZIP before copying them onto the
+VMS system, when you extract them using UNZIP they will have the attributes
+sequential + streamlf.
 
 ### Problem Reports
 
