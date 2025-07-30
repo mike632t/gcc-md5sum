@@ -73,6 +73,10 @@
 
 #define _DEBUG_H_
 
+#ifndef NAME
+void error(int i_errno, const char *s_format, ...);
+void warning(int i_errno, const char *s_format, ...);
+#else
 #include <stdio.h>
 #include <stdarg.h>
 #include <errno.h>
@@ -98,4 +102,5 @@ void warning(int i_errno, const char *s_format, ...)  /* Print formatted warning
    fprintf(stderr, "\n");
    va_end(t_args);
 }
+#endif
 #endif

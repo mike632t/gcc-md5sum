@@ -24,7 +24,6 @@
  *                        independently of the file system. - MT
  *                      - Added copyright notice from RFC - MT
  * 
- * 
  * TODO:                
  * 
  */
@@ -39,8 +38,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "gcc-debug.h"
+#include <errno.h>      /* errno */
+
 #include "gcc-md5sum.h"
+#include "gcc-debug.h"
 
 int main(int argc, char *argv[])
 {
