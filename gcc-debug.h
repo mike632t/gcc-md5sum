@@ -51,7 +51,7 @@
 #ifndef profile /* Don't redefine macro if already defined. */
 #include <stdio.h>
 #include <time.h>
-#if DEBUG /* Execute code if DEBUG is True */ 
+#if defined(DEBUG)  /* Execute code if DEBUG is True */ 
 #define profile(__code) do { /* Time how long code takes to execute */  \
    struct timespec __t_start, __t_end; \
    double __d_elapsed; \
@@ -73,10 +73,7 @@
 
 #define _DEBUG_H_
 
-#ifndef NAME
-void error(int i_errno, const char *s_format, ...);
-void warning(int i_errno, const char *s_format, ...);
-#else
+#if defined(NAME) 
 #include <stdio.h>
 #include <stdarg.h>
 #include <errno.h>
@@ -102,5 +99,8 @@ void warning(int i_errno, const char *s_format, ...)  /* Print formatted warning
    fprintf(stderr, "\n");
    va_end(t_args);
 }
+#else
+void error(int i_errno, const char *s_format, ...);
+void warning(int i_errno, const char *s_format, ...);
 #endif
 #endif
