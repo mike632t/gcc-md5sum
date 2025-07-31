@@ -3,12 +3,8 @@
 A standalone `md5sum` implementation in ANSI C (almost).  The use of language
 extensions or non standard language features has been avoided. 
 
-Currently work in progress (only tested on Debian).
-
 The  aim  is to have the same source code compile without  modification  on
 Linux, VAX/VMS, and Tru64 Unix.
-
-https://www.ietf.org/rfc/rfc1321.txt
 
 ### Compiling
 
