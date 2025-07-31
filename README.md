@@ -16,18 +16,18 @@ To  build the application on download the source code from GitHub and unzip
 it and invoke the compiler using the commands below.
 
 Linux/Tru64 Unix:
-
-    $ wget https://github.com/mike632t/gcc-md5sum/archive/refs/heads/stable.zip
-    $ unzip stable.zip
-    $ cd gcc-md5sum
-    $ make test
-
+```
+$ wget https://github.com/mike632t/gcc-md5sum/archive/refs/heads/stable.zip
+$ unzip stable.zip
+$ cd gcc-md5sum
+$ make test
+```
 VMS:
-
-    $ cc gcc-md5sum.c /define=DEBUG
-    $ link gcc-md5sum
-    $ run gcc-md5sum
-
+```
+$ cc gcc-md5sum.c /define=DEBUG
+$ link gcc-md5sum
+$ run gcc-md5sum
+```
 ### Tested
 
    - Debian 12 (Bookworm), gcc 12.2.0, i686
@@ -50,31 +50,30 @@ VMS:
 
 Note - Due to the way data is stored on disk, the md5sum digests for a file
 won't be the same on VMS systems as on UNIX.  To get the same MD5 digest as
-on a UNIX/Linux system your VMS file must have the file attributes streamlf
-and sequential.
+on a UNIX/Linux system your VMS file needs to have streamlf format records.
 
-You can check this using the following command.
+Converting  a file with variable format records to streamlf format  records
+can be done using a file that contains a description of the new file format
+written using the VMS file descriptor language.
+
+Fortunately this is just a specially formatted text file and can be created 
+using:
 ```
-$ anal/rms <filename>
+$ create stream_lf.fdl
+        ORGANIZATION            sequential
 
- :
- :
- :
-
-RMS FILE ATTRIBUTES
-
-        File Organization: sequential
-        Record Format: stream-LF
-        Record Attributes:   carriage-return
-        Maximum Record Size: 0
- :
- :
- :
-
+RECORD
+        CARRIAGE_CONTROL        carriage_return
+        FORMAT                  stream_LF
 ```
-Note  that if you compress the files using ZIP before copying them onto the
-VMS system, when you extract them using UNZIP they will have the attributes
-sequential + streamlf.
+Finish creating the file using Ctrl-Z.
+
+The FDL file can then used to convert an existing source file into one that 
+has streamlf records using the following command:
+```
+$ convert/fdl=stream_lf.fdl gcc-md5sum.c gcc-md5sum.txt
+```
+This can now be compared with the original using the md5sum digests.
 
 ### Problem Reports
 
